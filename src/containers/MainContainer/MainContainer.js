@@ -7,27 +7,29 @@ import {styles} from "./MainContainerCss";
 class MainContainer extends Component {
 
     state = {
-        modalVisible: false
+        modalVisible: false,
+        contacts: {}
     };
 
     componentDidMount(){
         this.props.getContacts()
     }
 
-    modalHandler = () => {
+    modalHandler = (id, contacts) => {
         this.setState({
             modalVisible: !this.state.modalVisible
         })
     };
 
     render() {
-
-        const contactsShowInfo = Object.keys(this.props.contacts).map(contactsItem => {
+        console.log(this.state.contacts);
+        const CONTACTS = this.props.contacts;
+        const contactsShowInfo = Object.keys(CONTACTS).map((contactsItem, index) => {
             const contact = this.props.contacts[contactsItem];
             return (
-                <TouchableOpacity style={styles.InfoContacts} key={contactsItem}>
+                <TouchableOpacity onPress={this.modalHandler)} style={styles.InfoContacts} key={contactsItem}>
                     <Image source={{uri: contact.photo}} style={{width: 100, height: 100}}/>
-                    <Text>{contact.name}</Text>
+                    <Text style={{marginRight: 50, fontSize: 22}}>{contact.name}</Text>
                 </TouchableOpacity>
             )
         });
@@ -40,10 +42,6 @@ class MainContainer extends Component {
                     </View>
                 </ScrollView>
 
-                <TouchableOpacity onPress={this.modalHandler}>
-                    <Text>Cjdsj</Text>
-                </TouchableOpacity>
-
                 <Modal
                     animationType="slide"
                     transparent={false}
@@ -52,7 +50,7 @@ class MainContainer extends Component {
                     }}>
                     <View style={{marginTop: 22}}>
                         <View>
-                            <Text>Hello World!</Text>
+                            <Text>{this.state.contacts.name}</Text>
 
                             <TouchableOpacity
                                 onPress={this.modalHandler}>
